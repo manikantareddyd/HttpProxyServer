@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <ctime>
+#include <netdb.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -23,6 +24,7 @@
 #include "genericFunctions.cpp"
 #include "../utils/proxy_parse.c"
 #include "501Handler.cpp"
+#include "getRequestHandler.cpp"
 #include "connectionHandler.cpp"
 #include "socketFunctions.cpp"
 

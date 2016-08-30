@@ -36,9 +36,9 @@ void handleConnection()
 		}
 		else
 		{
-			printf("Method:%s\n", request->method);
-			printf("Host:%s\n", request->host);
-
+			// printf("Method:%s\n", request->method);
+			// printf("Host:%s\n", request->host);
+			handleGetRequest(request);
 		}
     }
 	return;
