@@ -13,3 +13,4 @@ int DEBUG = 0;
 int listenStatus;
 bool keepAlive = 1;
 std::string rootDir = "./webfiles";
+int noOfChildren = 0;

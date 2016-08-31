@@ -1,8 +1,14 @@
 
 #include "proxy.h"
 
+void sgHandler(int sig)
+{
+	noOfChildren-- ;
+}
+
 int main(int argc, char *argv[])
 {
+	signal(SIGCHILD,sgHandler);
 	if(argv[1]!=NULL)
 		PORT = atoi(argv[1]);
 	if(argv[2]!=NULL) 
@@ -13,7 +19,11 @@ int main(int argc, char *argv[])
 	
 	while(1)
 	{
-		acceptNewConnection();
+		if(noOfChildren < 20) 
+		{
+			noOfChildren++;
+			acceptNewConnection();
+		}
 	}
 	return 0;
 }
