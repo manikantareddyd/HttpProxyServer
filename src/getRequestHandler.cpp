@@ -24,7 +24,10 @@ void getResponseFromHost(std::string host, std::string request)
     {
         printf("YOLO\n");
         send(sd,(char *)request.c_str(),request.length(),0);
-        while(1){
+        while(1)
+        {
+            printf("YOLO\n");
+        
             memset(messageBuffer,0,4096);
             bytesRead = recv(
                 sd,
@@ -43,23 +46,29 @@ void getResponseFromHost(std::string host, std::string request)
                 We need to loop till all writable bytes are written to socket buffer.
                 If write fails in between we loop back and write the remaining bytes
             */
-            while(1)
-            {
-                bytesWritten = send( 
+            send( 
                     clientSockId,
                     messageBuffer + bytesOverHead,
-                    bytesToWrite,
+                    bytesRead,
                     0
                 );
+            // while(1)
+            // {
+            //     bytesWritten = send( 
+            //         clientSockId,
+            //         messageBuffer + bytesOverHead,
+            //         bytesToWrite,
+            //         0
+            //     );
                 
-                if(bytesWritten == bytesToWrite) 
-                    break;
-                else
-                {
-                    bytesOverHead = bytesOverHead + bytesWritten;
-                    bytesToWrite = 4096 - bytesOverHead;
-                }
-            }
+            //     if(bytesWritten == bytesToWrite) 
+            //         break;
+            //     else
+            //     {
+            //         bytesOverHead = bytesOverHead + bytesWritten;
+            //         bytesToWrite = 4096 - bytesOverHead;
+            //     }
+            // }
 
         }
     }
@@ -69,8 +78,11 @@ void getResponseFromHost(std::string host, std::string request)
 void handleGetRequest(ParsedRequest *request)
 {
     std::string requestToHost = "";
-    ParsedHeader_set(request, "Connection", "Close");
+    ParsedHeader_remove(request,"Host");
+    ParsedHeader_remove(request,"Connection");
     requestToHost = requestToHost + "GET "+request->path+" HTTP/1.1\r\n";
+    requestToHost = requestToHost + "Host: "+request->host+"\r\n";
+    requestToHost = requestToHost + "Connection: Close \r\n";
     char buf[4096];
     memset(buf,0,4096);
     ParsedRequest_unparse_headers(request,buf,4096);
