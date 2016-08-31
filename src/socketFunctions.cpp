@@ -74,6 +74,7 @@ void acceptNewConnection()
 	}
 	if(clientSockId > 0 && fork()==0)
 	{
+		//We can safely create a child
 		clientStorageSize = sizeof(clientStorage);
 		
 		close(listenStatus);
@@ -81,6 +82,7 @@ void acceptNewConnection()
 		if(DEBUG)
 			printf("New Connection accepted PID: %d\n",getpid());
 
+		//We'll invoke the connection handler to do the rest
 		handleConnection();
 
 		close(serverSockId);
@@ -90,13 +92,15 @@ void acceptNewConnection()
 			printf("Connection Closed\nChild Process will exit now\n\n");
 		exit(0);
 	}
+	//For concurrent 20 childrn
 	else if(clientSockId > 0)
 	{
 		noOfChildren++;
 	}
-	while(noOfChildren>20)
-	{
-		sleep(1);
-	}
+
+	// while(noOfChildren>20)
+	// {
+	// 	sleep(1);
+	// }
 	close(clientSockId);
 }

@@ -1,5 +1,6 @@
 void getResponseFromHost(std::string host, std::string request,int port)
 {
+    //Get respnse from HOST and send to CLient
     int	hostSockId;
 	struct	sockaddr_in server;
 	struct  hostent *hp;
@@ -16,18 +17,20 @@ void getResponseFromHost(std::string host, std::string request,int port)
         (struct sockaddr *)&server,
         sizeof(server)
     );
+
     if(c<0)
     {
         if(DEBUG) printf("Server couldn't connect to Host: %s\n",(char *)host.c_str());
     }
     else
     {
-        
+        //Send reuqtes to HOST    
         send(hostSockId,(char *)request.c_str(),request.length(),0);
         while(1)
         {
         
             memset(messageBuffer,0,4096);
+            //Recv form HOST
             bytesRead = recv(
                 hostSockId,
                 messageBuffer,
@@ -38,6 +41,7 @@ void getResponseFromHost(std::string host, std::string request,int port)
             if(bytesRead<=0)
                 break;
        
+            //Send to CLient
             send( 
                 clientSockId,
                 messageBuffer,
@@ -52,6 +56,7 @@ void getResponseFromHost(std::string host, std::string request,int port)
 
 void handleGetRequest(ParsedRequest *request)
 {
+    //Request To Host
     std::string requestToHost = "";
     ParsedHeader_remove(request,"Host");
     ParsedHeader_remove(request,"Connection");

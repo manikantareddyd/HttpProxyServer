@@ -18,6 +18,7 @@ void handleConnection()
 			BUFFERSIZE,
 			0
 		);
+		//Consecutive /r/n to handle split requests
 		bytesRead = bytesRead + tmp;
 		if(!strcmp(messageBuffer+bytesRead-4,"\r\n\r\n"))
 			break;
@@ -37,16 +38,19 @@ void handleConnection()
 
 
 	int len = strlen(messageBuffer);
+	//Parse the request
 	ParsedRequest *request = ParsedRequest_create();
 	if (ParsedRequest_parse(request, messageBuffer, len) < 0) 
 	{
 		if(DEBUG) 
 			printf("parse failed\n");
+		//Since an error has occured handle it aas 500
 		handle500("Close");
 		return ;
 	}
 	else
 	{
+		//Good going. There is still hope
 		handleGetRequest(request);
 	}
 

@@ -13,13 +13,16 @@ int main(int argc, char *argv[])
 	
 	if(argv[1]!=NULL)
 		PORT = atoi(argv[1]);
-		
+	//Create Socket	
 	createSocket();
+	//Bind Scoket
 	bindSocket();
+	//Listen through SOcket
 	listenThroughSocket();
 	
 	while(1)
 	{
+		//Accept a new connection
 		acceptNewConnection();
 	}
 	
