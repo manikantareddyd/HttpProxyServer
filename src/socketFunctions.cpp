@@ -71,19 +71,11 @@ void acceptNewConnection()
 	if(clientSockId < 0)
 	{
 		if(DEBUG) printf("I can't accept this socket\n");
-		exit(0);
 	}
-	int pid;
-	if(fork()==0)
+	if(clientSockId > 0 && fork()==0)
 	{
 		clientStorageSize = sizeof(clientStorage);
-		// getpeername(
-		// 	clientSockId, 
-		// 	(struct sockaddr *)&clientSockAddr, 
-		// 	&clientStorageSize);
-		// char *clientip = new char[20];
-		// strcpy(clientip, inet_ntoa(clientSockAddr.sin_addr));
-		// clientIP = (std::string)clientip;
+		
 		close(listenStatus);
 
 		if(DEBUG)
@@ -93,12 +85,18 @@ void acceptNewConnection()
 
 		close(serverSockId);
 		close(clientSockId);
+
 		if(DEBUG)
 			printf("Connection Closed\nChild Process will exit now\n\n");
 		exit(0);
 	}
-	else
+	else if(clientSockId > 0)
 	{
-		close(clientSockId);
+		noOfChildren++;
 	}
+	while(noOfChildren>20)
+	{
+		sleep(1);
+	}
+	close(clientSockId);
 }

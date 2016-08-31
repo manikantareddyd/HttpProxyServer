@@ -15,13 +15,12 @@
 #include <signal.h>
 #include <ctime>
 #include <netdb.h>
-
+#include <signal.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
 //My files
 #include "globalVariables.cpp"
-#include "genericFunctions.cpp"
 #include "../utils/proxy_parse.c"
 #include "500handler.cpp"
 #include "getRequestHandler.cpp"
